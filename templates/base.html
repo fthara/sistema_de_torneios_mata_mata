@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <title>Torneios Mata-Mata</title>
+       
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- Bootstrap CSS CDN -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        <!-- Our Custom CSS -->
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+        <!-- Font Awesome JS -->
+        <script src="https://kit.fontawesome.com/9c464785d1.js" crossorigin="anonymous"></script>
+
+        <!-- Scrollbar Custom CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">  
+    </head>
+    
+
+    <body>
+        <!-- jQuery CDN - Slim version (=without AJAX) -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <!-- Popper.JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+        <!-- jQuery Custom Scroller CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+        <!-- Scrollbar Custom CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css"> 
+
+        <div class="wrapper">
+            <!-- Sidebar  -->
+            <nav id="sidebar">
+                <div class="sidebar-header">
+                    <h4 style='text-align:center'>Torneios</h4>
+                    <h4 style='text-align:center'>Eliminatórios</h4>
+                </div>
+        
+                <ul class="list-unstyled components">
+                    <li class="active">                       
+                            <a href="{% url 'home' %}">
+                                <i class="fas fa-home"></i>
+                                Home
+                            </a>                           
+                        <a href="/competidor/buscar_competidor">
+                            <i class="fas fa-users"></i>
+                            Competidores
+                        </a>
+                        <a href="/torneio/buscar_torneio">
+                            <i class="fas fa-trophy"></i>
+                            Torneios
+                        </a>
+                    </li>
+                </ul>
+        
+            </nav>
+        
+            <!-- Page Content  -->
+            <div id="content">
+                <nav class="navbar navbar-expand-lg" style="background-color: #badff0">
+                    <div class="container-fluid">
+                        <button type="button" id="sidebarCollapse" class="btn btn-info" style="background-color: #111727">
+                            <i class="fas fa-align-left"></i>
+                        </button>
+                    </div>
+                </nav>
+
+                <div class="main">
+                    <table id="cabecalho">
+                          <tr>
+                            <th style="width:30%">
+                                <div class="img_center">
+                                    <img src="{% static 'images/STL_LogoSkyBlue.png' %}" width="100%" height="100%"/>
+                                </div>
+                            </th>
+                            <th style="width:70%">
+                                <h1 style="font-size:40px;">Sistema de Torneios Mata-Mata</h1>
+                                <h2 style="font-size:25px;">Spacetime Labs</h2>
+                            </th>
+                          </tr>
+                    </table>
+                        
+                    
+                    {% block content %}
+                    replace me
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        
+        <script src="{% static 'js/scripts.js' %}"></script>
+    </body>
+</html>

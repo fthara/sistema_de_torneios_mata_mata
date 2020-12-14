@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% bootstrap_messages %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<body>
+    <!-- Dados do Torneio -->
+    <div class="card card-body" style="background-color: #badff0">
+        <div class="container-fluid">
+            <div class="well">
+                <div class="form-row">
+                    <p><b>Competidor:</b> {{ competidor.nome_competidor }}</p>
+                </div>
+                <div class="form-row">
+                    <p><b>País:</b> {{ competidor.pais }}</p>
+                </div>
+                <div class="form-row">
+                    <p><b>Estado:</b> {{ competidor.estado }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </br>
+{% endblock %}

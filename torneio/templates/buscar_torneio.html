@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+{% load torneios_extras %}
+
+{% block content %}
+<body>
+  <!-- Botão adiciona Torneio -->
+  <div class="text-right">
+    <a class="btn btn-success" href="/competidor/adicionar_competidor" role="button" 
+    style = "margin-bottom: .5rem;">Cadastrar Competidor</a>
+    <a class="btn btn-success" href="/torneio/adicionar_torneio" role="button" 
+    style = "margin-bottom: .5rem;">Cadastrar Torneio</a>
+  </div>
+
+  <!-- Formulário Filtro -->
+  <div class="card card-body" style="background-color: #badff0">
+    <div class="container-fluid">
+      <form method="get">
+        <div class="well">
+          <h4 style="margin-top: 0">Filtro</h4>
+          <div class="form-row">
+            <!-- Filtro do nome do torneio -->
+            <div class="form-group col-sm-4 col-md-8">
+              {{ filtered_torneios.form.nome_torneio.label_tag }}
+              {% render_field filtered_torneios.form.nome_torneio class="form-control" %}
+            </div>
+            <!-- Filtro do tipo do torneio -->
+            <div class="form-group col-sm-4 col-md-4">
+                {{ filtered_torneios.form.tipo_torneio.label_tag }}
+                {% render_field filtered_torneios.form.tipo_torneio class="form-control" %}
+            </div>
+          </div>
+          <div class="form-row">
+            <!-- Filtro da modalidade do torneio -->
+            <div class="form-group col-sm-4 col-md-4">
+              {{ filtered_torneios.form.modalidade.label_tag }}
+              {% render_field filtered_torneios.form.modalidade class="form-control" %}
+            </div>
+            <!-- Filtro de competidores do torneio -->
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filtered_torneios.form.competidor.label_tag }}
+              {% render_field filtered_torneios.form.competidor class="form-control" %}
+            </div>
+            <!-- Ordena o torneio pelo nome -->
+            <div class="form-group col-sm-4 col-md-3">
+                {{ filtered_torneios.form.ordering.label_tag }}
+                {% render_field filtered_torneios.form.ordering class="form-control" %}
+            </div>
+          </div>
+          <button type=submit class="btn btn-primary">Search</button>
+          <a class="btn btn-success" href="/torneio/buscar_torneio" role="button">Mostrar Tudo</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Tabela de Torneios -->
+  <div class="row">
+    <h3 class="main" style="margin-top: 1em">Lista de Torneios</h3>
+  </div>
+  <div class="container-fluid"> 
+    <div class="row">
+      <div class="col-md-12">
+        <table id="datatable" class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Modalidade</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>   
+            {% for torneio in torneio_page_obj %}
+              <tr>
+                <td>{{ torneio.nome_torneio }}</td>
+                <td>{{ torneio.tipo_torneio }}</td>
+                <td>{{ torneio.modalidade }}</td>
+                <td>
+                  <div class="text-center">
+                    <a class="btn btn-outline-success" href="/torneio/exibir_torneio/{{ torneio.pk }}"
+                    data-toggle="tooltip" data-placement="bottom" title="Visualizar os Dados">
+                      <i class="fa fa-eye"></i>
+                    </a>
+                    <a class="btn btn-outline-primary" href="/torneio/editar_torneio/{{ torneio.pk }}"
+                    data-toggle="tooltip" data-placement="bottom" title="Editar o Torneio">
+                      <i class="fa fa-pencil-square-o"></i>
+                    </a>
+                    <a class="btn btn-outline-danger" href="deletar_torneio/{{ torneio.pk }}"
+                    data-toggle="tooltip" data-placement="bottom" title="Deletar o Torneio">
+                      <i class="fa fa-trash-o"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Páginas -->
+  {% if items.has_other_pages %}
+    <div class="col-6 offset-3 text-center pagination-set">
+      <nav aria-label="">
+        <ul class="pagination">
+          {% if items.has_previous %}
+            <li class="page-item"><a class="page-link" 
+            href="{% torneios_url items.previous_page_number 'page' request.GET.urlencode %}"><<</a>
+            </li>
+          {% else %}
+            <li class="page-item disable">
+              <a class="page-link"><span><<</span></a>
+            </li>
+          {% endif %}
+          {% for i in page_range %}   
+            {% if  items.number == i %}
+              <li class="page-item active">
+                <a class="page-link" href"#">{{i}}<span class="sr-only">(current)</span></a>
+              </li>
+            {% else %}
+              <li class="page-item"><a class="page-link" href="{% torneios_url i 'page' request.GET.urlencode %}">{{i}}</a></li>
+            {% endif %}
+          {% endfor %}
+          {% if items.has_next %}
+            <li class="page-item"><a class="page-link" aria-label="Next" 
+              href="{% torneios_url items.next_page_number 'page' request.GET.urlencode %}">>></a>
+            </li>
+          {% else %}
+            <li class="page-item disable"><a class="page-link"><span>>></span></a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  {% endif %}
+
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
+{% endblock %}

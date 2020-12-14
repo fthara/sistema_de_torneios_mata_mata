@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    p {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1em;
+        font-weight: 300;
+        line-height: 1.7em;
+        color: #000000;
+    }
+</style>
+
+<form method="post">{% csrf_token %}
+    <p>Tem certeza que deseja excluir o competidor: {{ object.nome_competidor }}?</p>
+    <p>Esta ação não poderá ser reversível</p>
+    <button type="submit" class="btn btn-danger">Excluir</button>
+    <a class="btn btn-secondary" href="{% url 'buscar_competidor' %}" role="button">Cancelar</a>
+</form>
+
+{% endblock %}

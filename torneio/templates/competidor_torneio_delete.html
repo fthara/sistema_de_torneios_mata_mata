@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form method="post">{% csrf_token %}
+    <button type="submit" class="btn btn-danger">Excluir</button>
+    <a class="btn btn-secondary" href="{% url 'exibir_torneio' %}" role="button">Cancelar</a>
+</form>
+
+{% endblock %}

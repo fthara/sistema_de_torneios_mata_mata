@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% bootstrap_messages %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<body>
+    <!-- Dados do Torneio -->
+    <div class="card card-body" style="background-color: #badff0">
+        <div class="container-fluid">
+            <div class="well">
+                <div class="form-row">
+                    <p><b>Torneio:</b> {{ torneio.nome_torneio }}</p>
+                </div>
+                <div class="form-row">
+                    <p><b>Tipo:</b> {{ torneio.tipo_torneio }}</p>
+                </div>
+                <div class="form-row">
+                    <p><b>Modalidade:</b> {{ torneio.modalidade }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </br>
+    <!-- Mostra a lista de jogos normalmente quando não está na final -->
+    {% if rodada_atual != total_rodadas %}
+        <h4>Partidas:</h4>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="datatable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center">Competidor 1</th>
+                                <th style="text-align: center">Versus</th>
+                                <th style="text-align: center">Competidor 2</th>
+                                <th style="text-align: center">Vencedor</th>
+                            </tr>
+                        </thead>
+                        {% for partida in partidas %}
+                            <tbody>
+                                <tr>
+                                    {% if partida.competidor1 == partida.vencedor %}
+                                        <td style="text-align: center">{{ partida.competidor1 }} (Vencedor)</td>
+                                    {% else %}
+                                        <td style="text-align: center">{{ partida.competidor1 }}</td>
+                                    {% endif %}
+                                        <td style="text-align: center">X</td>
+                                    {% if partida.competidor2 %}
+                                        {% if partida.competidor2 == partida.vencedor %}
+                                            <td style="text-align: center">{{ partida.competidor2 }} (Vencedor)</td>
+                                        {% else %}
+                                            <td style="text-align: center">{{ partida.competidor2 }}</td>
+                                        {% endif %}
+                                    {% else %}
+                                        <td style="text-align: center"> Sem competidor </td>
+                                    {% endif %}
+                                    <td>
+                                        {% if partida.vencedor == None %}
+                                            <div class="text-center">
+                                                <a class="btn btn-primary center-block" href="/torneio/{{ torneio.pk }}/resultado_partida/{{ partida.pk }}/"
+                                                data-toggle="tooltip" data-placement="bottom" title="Cadastrar Resultado">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                </a>
+                                            </div>
+                                        {% else %}
+                                            <p style="text-align: center">{{ partida.vencedor }}</p>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div> 
+    {% else %}
+         <!-- Quando está na final imprime o jogo da diputa do 1º e 2º lugar e o jogo do 3º e 4º lugar separados -->
+        <h4>Decisão 1º e 2º colocados:</h4>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="datatable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center">Competidor 1</th>
+                                <th style="text-align: center">Versus</th>
+                                <th style="text-align: center">Competidor 2</th>
+                                <th style="text-align: center">Vencedor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% if disputa1e2.competidor1 == disputa1e2.vencedor %}
+                                    <td style="text-align: center">{{ disputa1e2.competidor1 }} (Vencedor)</td>
+                                {% else %}
+                                    <td style="text-align: center">{{ disputa1e2.competidor1 }}</td>
+                                {% endif %}
+                                    <td style="text-align: center">X</td>
+                                {% if disputa1e2.competidor2 %}
+                                    {% if disputa1e2.competidor2 == disputa1e2.vencedor %}
+                                        <td style="text-align: center">{{ disputa1e2.competidor2 }} (Vencedor)</td>
+                                    {% else %}
+                                        <td style="text-align: center">{{ disputa1e2.competidor2 }}</td>
+                                    {% endif %}
+                                {% else %}
+                                    <td style="text-align: center"> Sem competidor </td>
+                                {% endif %}
+                                <td>
+                                    {% if disputa1e2.vencedor == None %}
+                                        <div class="text-center">
+                                            <a class="btn btn-primary center-block" href="/torneio/{{ torneio.pk }}/resultado_partida/{{ disputa1e2.pk }}/"
+                                            data-toggle="tooltip" data-placement="bottom" title="Cadastrar Resultado">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <p style="text-align: center">{{ disputa1e2.vencedor }}</p>
+                                    {% endif %}
+                                </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <h4>Decisão 3º e 4º colocados:</h4>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="datatable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center">Competidor 1</th>
+                                <th style="text-align: center">Versus</th>
+                                <th style="text-align: center">Competidor 2</th>
+                                <th style="text-align: center">Vencedor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% if disputa3e4.competidor1 == disputa3e4.vencedor %}
+                                    <td style="text-align: center">{{ disputa3e4.competidor1 }} (Vencedor)</td>
+                                {% else %}
+                                    <td style="text-align: center">{{ disputa3e4.competidor1 }}</td>
+                                {% endif %}
+                                    <td style="text-align: center">X</td>
+                                {% if disputa3e4.competidor2 %}
+                                    {% if disputa3e4.competidor2 == disputa3e4.vencedor %}
+                                        <td style="text-align: center">{{ disputa3e4.competidor2 }} (Vencedor)</td>
+                                    {% else %}
+                                        <td style="text-align: center">{{ disputa3e4.competidor2 }}</td>
+                                    {% endif %}
+                                {% else %}
+                                    <td style="text-align: center"> Sem competidor </td>
+                                {% endif %}
+                                <td>
+                                    {% if disputa3e4.vencedor == None %}
+                                        <div class="text-center">
+                                            <a class="btn btn-primary center-block" href="/torneio/{{ torneio.pk }}/resultado_partida/{{ disputa3e4.pk }}/"
+                                            data-toggle="tooltip" data-placement="bottom" title="Cadastrar Resultado">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <p style="text-align: center">{{ disputa3e4.vencedor }}</p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    </br>
+    <!-- Se o campeonato está encerrado imprime o encerramento do campeonato -->
+    {% if disputa1e2 != None%}
+            <div class="card card-body" style="background-color: #badff0">
+                <div class="container-fluid">
+                    <div class="well">
+                        <h3>O campeonato foi encerrado. Parabéns ao campeão: {{ disputa1e2.vencedor }}</h3>
+                    </div>
+                </div>
+            </div>
+            </br>
+    {% endif %}
+    <div class="card card-body" style="background-color: #badff0">
+        <div class="container-fluid">
+            <div class="well">
+                <!-- Botão que volta na tela inicial do torneio -->
+                <h5>Ver fases do torneio:</h5>
+                <a class="btn btn-success" href="/torneio/exibir_torneio/{{ torneio.pk }}/" role="button" style = "margin-bottom: .5rem;">
+                    Exibir Torneio
+                </a>
+                <!-- Cria os botoes das fases do torneio -->
+                {% for rodada in rodadas %}
+                    {% if rodada.0 != rodada_atual %}
+                        <a class="btn btn-success" href="/torneio/{{ torneio.pk }}/ver_partidas_da_rodada/{{ rodada.0 }}" role="button" 
+                            style = "margin-bottom: .5rem;">{{ rodada.0 }}ª Fase</a>
+                    {% endif %}
+                {% endfor %}
+                <!-- Cria o botão dos primeiros colocados, que só aparece quando o campeonato encerra -->
+                <!-- Verifica quando existem mais de 2 competidores -->
+                {% if disputa1e2 != None and disputa3e4 != None %}
+                    {% if disputa1e2.vencedor != None and disputa3e4.vencedor != None %}
+                        <a class="btn btn-success" href="/torneio/{{ torneio.pk }}/listar_4_primeiros/" role="button" style = "margin-bottom: .5rem;">
+                            Ver lista dos primeiros colcados
+                        </a>
+                    {% endif %}
+                {% endif %}
+                <!-- Cria o botão dos primeiros colocados, que só aparece quando o campeonato encerra -->
+                <!-- Verifica quando existem de 2 competidores -->
+                {% if disputa1e2 != None and disputa3e4 == None %}     
+                    {% if disputa1e2.vencedor != None %}
+                        <a class="btn btn-success" href="/torneio/{{ torneio.pk }}/listar_4_primeiros/" role="button" style = "margin-bottom: .5rem;">
+                            Ver lista dos primeiros colocados
+                        </a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>  
+</body>
+
+<style>
+    p {
+        margin-bottom: .5rem;
+        font-size: 1rem; 
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: left;
+    }
+</style>
+<script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+
+{% endblock %}
