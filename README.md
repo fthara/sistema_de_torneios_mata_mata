@@ -10,6 +10,9 @@ O sistema de torneios mata-mata foi desenvolvido no django versão 2.0.7 utiliza
 * $ pip install django-crispy-forms
 * $ pip install django-filter
 
+Após instaladas as bibliotecas, executar o seguinte comando para rodar o programa:
+* python manage.py runserver
+
 Instruções de uso:
 
 * Na aba Competidores você encontra a lista de competidores do torneio, onde é possível cadastrar mais competidores, editar e excluí-los também.
